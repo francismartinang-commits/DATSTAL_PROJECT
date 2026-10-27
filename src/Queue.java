@@ -5,3 +5,5 @@ static class Queue {
         a[(head + size++) % MAX] = v;      // next free slot, wraps around
         return true;
     }
+    int poll() {                           // -1 when the queue is empty
+        if (size == 0) return -1;
