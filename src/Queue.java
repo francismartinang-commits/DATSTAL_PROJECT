@@ -7,3 +7,7 @@ static class Queue {
     }
     int poll() {                           // -1 when the queue is empty
         if (size == 0) return -1;
+        int v = a[head];
+        head = (head + 1) % MAX; size--;
+        return v;
+    }
