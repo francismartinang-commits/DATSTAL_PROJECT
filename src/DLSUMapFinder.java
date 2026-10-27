@@ -6,6 +6,13 @@ public class DLSUMapFinder {
 
     /* ---------------------- data structures---------------- */
 
-    
+    /** One campus location: an element of the places array. */
+    static class Place {
+        String name, key;                      // key = normalized name
+        int type;                              // index into TYPES
+        Place(String name, int type) {
+            this.name = name; this.type = type; key = norm(name);
+        }
+    }
 
 }
