@@ -15,4 +15,13 @@ public class DLSUMapFinder {
         }
     }
 
+    static Place[] places = new Place[MAX];    // the array of places
+    static int n;                              // how many places are stored
+
+    // Trim, squeeze spaces, lower-case: makes name matching forgiving.
+    static String norm(String s) {
+        return s.trim().replaceAll("\\s+", " ").toLowerCase();
+    }
+
+    
 }
