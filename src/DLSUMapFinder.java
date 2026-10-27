@@ -23,5 +23,14 @@ public class DLSUMapFinder {
         return s.trim().replaceAll("\\s+", " ").toLowerCase();
     }
 
-    
+    // Add a place at the end of the array: returns its id, or -1 if full.
+    static int addPlace(String name, int type) {
+        if (n == MAX) return -1;
+        places[n] = new Place(name, type);
+        return n++;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Week 1 build. To test it run: java Week 1 Test");
+    }
 }
