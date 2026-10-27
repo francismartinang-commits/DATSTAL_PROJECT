@@ -26,4 +26,44 @@ public class Test {
                 DLSUMapFinder.addPlace("Extra", 0) == -1);
 
 
+        // ---- the queue ----
+        DLSUMapFinder.Queue q = new DLSUMapFinder.Queue();
+        check("new queue is empty", q.isEmpty());
+        check("poll on an empty queue gives -1", q.poll() == -1);
+        q.add(5);
+        q.add(7);
+        q.add(9);
+        check("first in, first out",
+                q.poll() == 5 && q.poll() == 7 && q.poll() == 9);
+        boolean ok = true;                     // slide 2 items through the
+        q.add(0);
+        q.add(1);                    // array 3 times to force a wrap
+        for (int i = 2; i < 3 * max; i++) {
+            q.add(i);
+            ok &= q.poll() == i - 2;
+        }
+        check("order stays right after wrapping around", ok && q.size == 2);
+        DLSUMapFinder.Queue f = new DLSUMapFinder.Queue();
+        boolean filled = true;
+        for (int i = 0; i < max; i++) filled &= f.add(i);
+        check("queue accepts MAX items", filled);
+        check("adding to a full queue gives false", !f.add(999));
+
+
+        // ---- together, the way BFS will use them: ids in, names out ----
+        DLSUMapFinder.n = 0;
+        DLSUMapFinder.Queue d = new DLSUMapFinder.Queue();
+        String[] names = {"Taft Gate", "St. La Salle Hall", "Andrew Hall"};
+        for (String s : names) d.add(DLSUMapFinder.addPlace(s, 0));
+        System.out.print("\nVisit order:");
+        while (!d.isEmpty())
+            System.out.print("  " + DLSUMapFinder.places[d.poll()].name);
+        System.out.println("\n");
+
+
+        System.out.println(failed == 0 ? "All tests passed."
+                : failed + " test(s) FAILED.");
+        System.exit(failed == 0 ? 0 : 1);
+    }
+}
 
