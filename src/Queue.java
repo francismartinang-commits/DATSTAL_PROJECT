@@ -11,3 +11,5 @@ static class Queue {
         head = (head + 1) % MAX; size--;
         return v;
     }
+    boolean isEmpty() { return size == 0; }
+}
