@@ -15,6 +15,23 @@ public class DLSUMapFinder {
         }
     }
 
+    static class Queue {
+        int[] a = new int[MAX]; int head, size;
+        boolean add(int v) {                   // false when the queue is full
+            if (size == MAX) return false;
+            a[(head + size++) % MAX] = v;      // next free slot, wraps around
+            return true;
+        }
+        int poll() {                           // -1 when the queue is empty
+            if (size == 0) return -1;
+            int v = a[head];
+            head = (head + 1) % MAX; size--;
+            return v;
+        }
+        boolean isEmpty() { return size == 0; }
+    }
+
+
     static Place[] places = new Place[MAX];    // the array of places
     static int n;                              // how many places are stored
 
