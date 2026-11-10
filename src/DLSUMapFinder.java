@@ -149,7 +149,22 @@ public class DLSUMapFinder {
                 + (bad > 0 ? ", skipped lines: " + bad : "") + ".");
     }
 
-
-
-
+    /** Print every place with its neighbors, to check the graph by eye. */
+    static void printGraph() {
+        System.out.println("\nGraph (" + n + " places, " + paths
+                + " pathways):");
+        for (int i = 0; i < n; i++) {
+            System.out.print("  " + places[i].name + " ->");
+            for (Edge e = adj[i]; e != null; e = e.next)
+                System.out.print(" [" + places[e.to].name + " " + e.w + " m]");
+            System.out.println();
         }
+    }
+
+
+
+
+
+
+
+}
