@@ -130,6 +130,25 @@ public class DLSUMapFinder {
                     System.out.println("  Line " + ln + " skipped: " + err);
             }
 
+        } catch (FileNotFoundException e) {    // old map is kept
+            System.out.println("Error: cannot open map file '" + file + "' "
+                    + "(missing or unreadable). Check the name and the folder.");
+            return;
+        } catch (IOException e) {
+            System.out.println("Error: failed while reading '" + file + "'.");
+            n = paths = 0;
+            adj = new Edge[MAX];
+            return;
+        }
+        if (bad > 10) System.out.println("  (" + (bad - 10) + " more skipped)");
+        if (n == 0) {
+            System.out.println("Error: the file holds no valid places.");
+            return;
+        }
+        System.out.println("Map loaded. Places: " + n + ", pathways: " + paths
+                + (bad > 0 ? ", skipped lines: " + bad : "") + ".");
+    }
+
 
 
 
