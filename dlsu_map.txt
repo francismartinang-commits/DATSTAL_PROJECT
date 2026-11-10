@@ -1,0 +1,44 @@
+
+# ---- Places ----
+PLACE,Taft Gate,PLACE
+PLACE,St. La Salle Hall,PLACE
+PLACE,Andrew Hall,PLACE
+PLACE,Henry Sy Hall,PLACE
+PLACE,Gokongwei Hall,PLACE
+PLACE,Agno Food Court,PLACE
+PLACE,University Chapel,PLACE
+PLACE,Rooftop Garden,PLACE
+PLACE,Andrew Stairs,STAIRS
+PLACE,Andrew Elevator,ELEVATOR
+PLACE,Henry Sy Elevator,ELEVATOR
+PLACE,Andrew CR (Men),CR_M
+PLACE,Andrew CR (Women),CR_F
+PLACE,Faculty Lounge (Restricted),FORBIDDEN
+PLACE,Maintenance Room (Restricted),FORBIDDEN
+
+# ---- Outdoor walkways ----
+PATH,Taft Gate,St. La Salle Hall,60
+PATH,Taft Gate,Andrew Hall,90
+PATH,St. La Salle Hall,University Chapel,45
+PATH,St. La Salle Hall,Andrew Hall,110
+PATH,St. La Salle Hall,Faculty Lounge (Restricted),30
+PATH,Faculty Lounge (Restricted),Henry Sy Hall,35
+PATH,University Chapel,Henry Sy Hall,100
+PATH,Andrew Hall,Henry Sy Hall,120
+PATH,Andrew Hall,Agno Food Court,70
+PATH,Henry Sy Hall,Agno Food Court,80
+PATH,Henry Sy Hall,Gokongwei Hall,90
+PATH,Agno Food Court,Gokongwei Hall,95
+
+# ---- Andrew Hall corridor (the men's CR sits between stairs and elevator)
+PATH,Andrew Hall,Andrew Stairs,20
+PATH,Andrew Hall,Andrew Elevator,35
+PATH,Andrew Stairs,Andrew CR (Men),10
+PATH,Andrew CR (Men),Andrew Elevator,12
+PATH,Andrew Hall,Andrew CR (Women),25
+PATH,Andrew CR (Women),Andrew Elevator,15
+
+# ---- Henry Sy Hall and the rooftop (only reachable through a restricted room)
+PATH,Henry Sy Hall,Henry Sy Elevator,30
+PATH,Henry Sy Elevator,Maintenance Room (Restricted),15
+PATH,Maintenance Room (Restricted),Rooftop Garden,20
