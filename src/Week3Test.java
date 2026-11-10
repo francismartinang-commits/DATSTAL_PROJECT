@@ -24,6 +24,7 @@ public class Week3Test {
 
     public static void main(String[] args) {
         DLSUMapFinder.load("dlsu_map.txt");
+        DLSUMapFinder.sortPlaces();
         check("map loads (15 places)", DLSUMapFinder.n == 15);
 
         // ---- sort and linear search ----
