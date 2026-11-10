@@ -239,6 +239,25 @@ public class DLSUMapFinder {
         return "";
     }
 
+    /** Is a map loaded? Prints an error when it is not. */
+    static boolean ready() {
+        if (n == 0)
+            System.out.println("Error: no map loaded. Choose 1 first.");
+        return n > 0;
+    }
+
+    /** Menu 2: every place in alphabetical order (uses the sorted ids). */
+    static void list() {
+        System.out.println("\nCampus places, A-Z (" + n + "):");
+        for (int i = 0; i < n; i++) {
+            int v = order[i];
+            System.out.printf("%s%3d. %-30s %s%n", blocked(v) ? "*" : " ",
+                    i + 1, places[v].name, TYPES[places[v].type]);
+        }
+        System.out.println("* = avoided: never used in your routes.");
+    }
+
+
     /** Week 2 demo: load the map file and print the graph to check it. */
     public static void main(String[] args) {
         load(args.length > 0 ? args[0] : "");
