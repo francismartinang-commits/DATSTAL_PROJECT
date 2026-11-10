@@ -43,7 +43,36 @@ public class Week3Test {
         check("search gives -1 for an unknown place",
                 DLSUMapFinder.find("Library") == -1);
 
+        // ---- blocking rules ----
+        int lounge = DLSUMapFinder.find("Faculty Lounge (Restricted)");
+        int menCR = DLSUMapFinder.find("Andrew CR (Men)");
+        int womenCR = DLSUMapFinder.find("Andrew CR (Women)");
+        DLSUMapFinder.gender = 'M';
+        check("forbidden area is blocked", DLSUMapFinder.blocked(lounge));
+        check("men may use the men's CR", !DLSUMapFinder.blocked(menCR));
+        check("men may not use the women's CR",
+                DLSUMapFinder.blocked(womenCR));
+        DLSUMapFinder.gender = 'F';
+        check("women may not use the men's CR", DLSUMapFinder.blocked(menCR));
+        check("women may use the women's CR",
+                !DLSUMapFinder.blocked(womenCR));
 
+        // ---- BFS ----
+        DLSUMapFinder.gender = 'M';
+        check("men's route goes through the men's CR (22 m)",
+                meters("Andrew Stairs", "Andrew Elevator") == 22);
+        check("no path to the Rooftop Garden",
+                meters("Henry Sy Hall", "Rooftop Garden") == -1);
+        check("Faculty Lounge shortcut (65 m) is never used",
+                meters("St. La Salle Hall", "Henry Sy Hall") > 65);
+        DLSUMapFinder.gender = 'F';
+        check("women's route avoids the men's CR (55 m)",
+                meters("Andrew Stairs", "Andrew Elevator") == 55);
+        check("one-stop route (Taft Gate to Andrew Hall = 90 m)",
+                meters("Taft Gate", "Andrew Hall") == 90);
 
+        System.out.println(failed == 0 ? "\nAll tests passed."
+                : "\n" + failed + " test(s) FAILED.");
+        System.exit(failed == 0 ? 0 : 1);
     }
 }
