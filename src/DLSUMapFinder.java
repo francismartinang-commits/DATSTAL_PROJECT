@@ -112,5 +112,15 @@ public class DLSUMapFinder {
         return "unknown record '" + f[0] + "'";
     }
 
+    /** Read a map file; bad lines are reported and skipped. */
+    static void load(String file) {
+        int bad = 0;                           // rejected lines
+        if (file.isEmpty()) file = "dlsu_map.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            n = paths = 0;                     // start from an empty map
+            adj = new Edge[MAX];
+            String line;
 
-}
+
+
+        }
