@@ -59,6 +59,13 @@ public class DLSUMapFinder {
     static Edge[] adj = new Edge[MAX];         // graph: one list per place
     static int n, paths;                       // places and pathways stored
 
+    /**Add static fields for place ordering, user preferences, and console input*/
+    static int[] order = new int[MAX];         // place ids sorted A-Z
+    static char gender;                        // 'M' or 'F'
+    static boolean showGraph;                  // print graph after loading
+    static BufferedReader in =
+            new BufferedReader(new InputStreamReader(System.in));
+
     /** Look a place up by name (ignores case and spaces): id, or -1. */
     static int find(String name) {
         String k = norm(name);
