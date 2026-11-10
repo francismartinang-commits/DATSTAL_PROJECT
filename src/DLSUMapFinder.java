@@ -273,9 +273,19 @@ public class DLSUMapFinder {
                     + "' is off-limits for you (restricted area or "
                     + "the other gender's CR).");
             return;
-
-
         }
+        if (s == t) {
+            System.out.println("You are already at '" + places[s].name + "'.");
+            return;
+        }
+        int[] prev = new int[n], dist = new int[n];
+        if (!bfs(s, t, prev, dist)) {
+            System.out.println("No valid path exists from '" + places[s].name
+                    + "' to '" + places[t].name + "' that avoids restricted "
+                    + "areas and the other gender's CRs.");
+            return;
+        }
+        show(prev, s, t, dist[t]);
     }
 
         /** Week 2 demo: load the map file and print the graph to check it. */
