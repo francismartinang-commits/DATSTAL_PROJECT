@@ -288,12 +288,34 @@ public class DLSUMapFinder {
         show(prev, s, t, dist[t]);
     }
 
-        /** Week 2 demo: load the map file and print the graph to check it. */
+    /** Ask the gender once, then loop on the 4-choice menu until Quit. */
     public static void main(String[] args) {
-        load(args.length > 0 ? args[0] : "");
-        if (n > 0) printGraph();
+        showGraph = args.length > 0 && args[0].equalsIgnoreCase("graph");
+        System.out.println("=== DLSU Campus Map Finder ===");
+        while (gender == 0) {                  // asked once, at start-up
+            String g = ask("Enter your gender (M/F): ").toUpperCase();
+            if (g.equals("M") || g.equals("MALE")) gender = 'M';
+            else if (g.equals("F") || g.equals("FEMALE")) gender = 'F';
+            else System.out.println("Invalid input. Please type M or F.");
+        }
+        while (true) {
+            System.out.println("\n1) Load map file\n2) Show places (A-Z)\n"
+                    + "3) Find path\n4) Quit");
+            try {
+                switch (ask("Choose 1-4: ")) {
+                    case "1": load(ask("Map file [dlsu_map.txt]: ")); break;
+                    case "2": if (ready()) list(); break;
+                    case "3": if (ready()) route(); break;
+                    case "4": System.out.println("Goodbye!"); return;
+                    default:  System.out.println("Invalid choice. Use 1-4.");
+                }
+            } catch (RuntimeException e) {     // last line of defense
+                System.out.println("Unexpected error: " + e);
+            }
+        }
     }
 }
+
 
 
 
