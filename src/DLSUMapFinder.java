@@ -257,8 +257,28 @@ public class DLSUMapFinder {
         System.out.println("* = avoided: never used in your routes.");
     }
 
+    /** Menu 3: check both places, then print the BFS route or an error. */
+    static void route() {
+        String a = ask("Start place : "), b = ask("Destination : ");
+        int s = find(a), t = find(b);
+        if (s < 0) System.out.println("Error: unknown place '" + a + "'.");
+        if (t < 0) System.out.println("Error: unknown place '" + b + "'.");
+        if (s < 0 || t < 0) {
+            System.out.println("Tip: choose option 2 to see the valid names.");
+            return;
+        }
+        int bad = blocked(s) ? s : blocked(t) ? t : -1;
+        if (bad >= 0) {
+            System.out.println("Error: '" + places[bad].name
+                    + "' is off-limits for you (restricted area or "
+                    + "the other gender's CR).");
+            return;
 
-    /** Week 2 demo: load the map file and print the graph to check it. */
+
+        }
+    }
+
+        /** Week 2 demo: load the map file and print the graph to check it. */
     public static void main(String[] args) {
         load(args.length > 0 ? args[0] : "");
         if (n > 0) printGraph();
