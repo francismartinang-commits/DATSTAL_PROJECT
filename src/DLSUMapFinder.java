@@ -47,7 +47,5 @@ public class DLSUMapFinder {
         return n++;
     }
 
-    public static void main(String[] args) {
-        System.out.println("Week 1 build. To test it run: java Week 1 Test");
-    }
+
 }
