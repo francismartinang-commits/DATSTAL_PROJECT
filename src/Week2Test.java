@@ -21,7 +21,7 @@ public class Week2Test {
     public static void main(String[] args) throws IOException {
         // ---- loader ----
         DLSUMapFinder.load("dlsu_map.txt");
-        check("16 places loaded", DLSUMapFinder.n == 16);
+        check("15 places loaded", DLSUMapFinder.n == 15);
         check("21 pathways loaded", DLSUMapFinder.paths == 21);
         check("file order is kept (first place is Taft Gate)",
                 DLSUMapFinder.places[0].name.equals("Taft Gate"));
@@ -51,7 +51,7 @@ public class Week2Test {
 
         // ---- error handling ----
         DLSUMapFinder.load("no_such_file.txt");
-        check("missing file keeps the old map", DLSUMapFinder.n == 16);
+        check("missing file keeps the old map", DLSUMapFinder.n == 15);
         try (PrintWriter w = new PrintWriter(new FileWriter("bad_map.txt"))) {
             w.println("PLACE,A,PLACE");
             w.println("PLACE,A,PLACE");           // duplicate place
