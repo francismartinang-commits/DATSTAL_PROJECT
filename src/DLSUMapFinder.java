@@ -120,6 +120,16 @@ public class DLSUMapFinder {
             n = paths = 0;                     // start from an empty map
             adj = new Edge[MAX];
             String line;
+            for (int ln = 1; (line = br.readLine()) != null; ln++) {
+                line = line.replace("\uFEFF", "").trim();   // drop BOM
+                if (line.isEmpty() || line.charAt(0) == '#') continue;
+                String[] f = line.split(",", -1);
+                for (int i = 0; i < f.length; i++) f[i] = f[i].trim();
+                String err = parse(f);
+                if (err != null && ++bad <= 10)
+                    System.out.println("  Line " + ln + " skipped: " + err);
+            }
+
 
 
 
