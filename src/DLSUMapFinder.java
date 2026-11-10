@@ -227,6 +227,17 @@ public class DLSUMapFinder {
         }
     }
 
+    /** Ask a question, return the trimmed answer; exit if input closes. */
+    static String ask(String prompt) {
+        System.out.print(prompt);
+        try {
+            String s = in.readLine();
+            if (s != null) return s.trim();
+        } catch (IOException e) { /* handled like end of input */ }
+        System.out.println("\nInput closed. Goodbye!");
+        System.exit(0);
+        return "";
+    }
 
     /** Week 2 demo: load the map file and print the graph to check it. */
     public static void main(String[] args) {
