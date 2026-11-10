@@ -168,6 +168,65 @@ public class DLSUMapFinder {
         }
     }
 
+    /* ------------------------------ WEEK 3 ----------------------------- */
+    /** Insertion sort of place ids by name, A-Z. O(n^2), fine for n<=100. */
+    static void sortPlaces() {
+        for (int i = 0; i < n; i++) order[i] = i;
+        for (int i = 1; i < n; i++) {
+            int v = order[i], j = i - 1;
+            while (j >= 0
+                    && places[order[j]].key.compareTo(places[v].key) > 0) {
+                order[j + 1] = order[j];       // shift larger names right
+                j--;
+            }
+            order[j + 1] = v;
+        }
+    }
+
+    /** Routing rule: forbidden areas and other-gender CRs are off-limits. */
+    static boolean blocked(int v) {
+        int t = places[v].type;
+        return t == FORBIDDEN || (t == CR_M && gender != 'M')
+                || (t == CR_F && gender != 'F');
+    }
+
+
+    /** BFS: fewest stops from s to t, skipping blocked places. O(n + e). */
+    static boolean bfs(int s, int t, int[] prev, int[] dist) {
+        for (int i = 0; i < n; i++) prev[i] = -1;       // -1 = not visited
+        Queue q = new Queue();
+        prev[s] = s; dist[s] = 0; q.add(s);
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            if (u == t) return true;
+            for (Edge e = adj[u]; e != null; e = e.next)
+                if (prev[e.to] < 0 && !blocked(e.to)) {
+                    prev[e.to] = u;                     // how we got here
+                    dist[e.to] = dist[u] + e.w;         // meters so far
+                    q.add(e.to);
+                }
+        }
+        return false;
+    }
+
+
+    /** Print the route s -> t recorded in prev[], one stop per line. */
+    static void show(int[] prev, int s, int t, int meters) {
+        int[] path = new int[n];
+        int len = 0;
+        for (int v = t; ; v = prev[v]) {       // walk back from t to s
+            path[len++] = v;
+            if (v == s) break;
+        }
+        System.out.println("\nFewest stops (BFS): " + (len - 1)
+                + (len == 2 ? " stop, " : " stops, ") + meters + " m");
+        for (int i = len - 1, k = 1; i >= 0; i--, k++) {
+            int type = places[path[i]].type;
+            System.out.println("  " + k + ". " + places[path[i]].name
+                    + (type == 0 ? "" : " [" + TYPES[type] + "]"));
+        }
+    }
+
 
     /** Week 2 demo: load the map file and print the graph to check it. */
     public static void main(String[] args) {
