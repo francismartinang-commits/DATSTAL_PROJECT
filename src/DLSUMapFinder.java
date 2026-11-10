@@ -9,42 +9,31 @@ public class DLSUMapFinder {
 
     /* ---------------------- data structures---------------- */
 
-    /**
-     * One campus location: an element of the places array.
-     */
+    /** One campus location: an element of the places array. */
     static class Place {
         String name, key;                      // key = normalized name
         int type;                              // index into TYPES
-
         Place(String name, int type) {
-            this.name = name;
-            this.type = type;
-            key = norm(name);
+            this.name = name; this.type = type; key = norm(name);
         }
     }
 
     static class Queue {
-        int[] a = new int[MAX];
-        int head, size;
-
+        int[] a = new int[MAX]; int head, size;
         boolean add(int v) {                   // false when the queue is full
             if (size == MAX) return false;
             a[(head + size++) % MAX] = v;      // next free slot, wraps around
             return true;
         }
-
         int poll() {                           // -1 when the queue is empty
             if (size == 0) return -1;
             int v = a[head];
-            head = (head + 1) % MAX;
-            size--;
+            head = (head + 1) % MAX; size--;
             return v;
         }
-
-        boolean isEmpty() {
-            return size == 0;
-        }
+        boolean isEmpty() { return size == 0; }
     }
+
 
 
     // Trim, squeeze spaces, lower-case: makes name matching forgiving.
@@ -60,13 +49,9 @@ public class DLSUMapFinder {
     }
 
     static class Edge {
-        int to, w;
-        Edge next;                  // target id, meters, next edge
-
+        int to, w; Edge next;                  // target id, meters, next edge
         Edge(int to, int w, Edge next) {
-            this.to = to;
-            this.w = w;
-            this.next = next;
+            this.to = to; this.w = w; this.next = next;
         }
     }
 
@@ -74,9 +59,7 @@ public class DLSUMapFinder {
     static Edge[] adj = new Edge[MAX];         // graph: one list per place
     static int n, paths;                       // places and pathways stored
 
-    /**
-     * Look a place up by name (ignores case and spaces): id, or -1.
-     */
+    /** Look a place up by name (ignores case and spaces): id, or -1. */
     static int find(String name) {
         String k = norm(name);
         for (int i = 0; i < n; i++)
@@ -85,9 +68,7 @@ public class DLSUMapFinder {
     }
 
 
-    /**
-     * Is there already a pathway between places a and b?
-     */
+    /** Is there already a pathway between places a and b? */
     static boolean hasPath(int a, int b) {
         for (Edge e = adj[a]; e != null; e = e.next)
             if (e.to == b) return true;
@@ -95,9 +76,7 @@ public class DLSUMapFinder {
     }
 
 
-    /**
-     * Store a two-way pathway: one edge in each direction.
-     */
+    /** Store a two-way pathway: one edge in each direction. */
     static void addPath(int a, int b, int w) {
         adj[a] = new Edge(b, w, adj[a]);
         adj[b] = new Edge(a, w, adj[b]);
@@ -105,9 +84,7 @@ public class DLSUMapFinder {
     }
 
 
-    /**
-     * Handle one split line: returns an error text, or null if accepted.
-     */
+    /** Handle one split line: returns an error text, or null if accepted. */
     static String parse(String[] f) {
         if (f[0].equalsIgnoreCase("PLACE")) {      // PLACE,name,TYPE
             if (f.length != 3 || f[1].isEmpty()) return "use PLACE,name,TYPE";
@@ -125,9 +102,8 @@ public class DLSUMapFinder {
             if (a < 0 || b < 0) return "unknown place in pathway";
             if (a == b) return "a pathway must join two different places";
             if (hasPath(a, b)) return "this pathway is already in the map";
-            try {
-                w = Integer.parseInt(f[3]);
-            } catch (NumberFormatException e) { /* w stays 0 -> rejected */ }
+            try { w = Integer.parseInt(f[3]); }
+            catch (NumberFormatException e) { /* w stays 0 -> rejected */ }
             if (w < 1 || w > 100000)
                 return "meters must be a whole number, 1 to 100000";
             addPath(a, b, w);
@@ -135,4 +111,45 @@ public class DLSUMapFinder {
         }
         return "unknown record '" + f[0] + "'";
     }
-}
+
+    /** Read a map file; bad lines are reported and skipped. */
+    static void load(String file) {
+        int bad = 0;                           // rejected lines
+        if (file.isEmpty()) file = "dlsu_map.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            n = paths = 0;                     // start from an empty map
+            adj = new Edge[MAX];
+            String line;
+            for (int ln = 1; (line = br.readLine()) != null; ln++) {
+                line = line.replace("\uFEFF", "").trim();   // drop BOM
+                if (line.isEmpty() || line.charAt(0) == '#') continue;
+                String[] f = line.split(",", -1);
+                for (int i = 0; i < f.length; i++) f[i] = f[i].trim();
+                String err = parse(f);
+                if (err != null && ++bad <= 10)
+                    System.out.println("  Line " + ln + " skipped: " + err);
+            }
+
+        } catch (FileNotFoundException e) {    // old map is kept
+            System.out.println("Error: cannot open map file '" + file + "' "
+                    + "(missing or unreadable). Check the name and the folder.");
+            return;
+        } catch (IOException e) {
+            System.out.println("Error: failed while reading '" + file + "'.");
+            n = paths = 0;
+            adj = new Edge[MAX];
+            return;
+        }
+        if (bad > 10) System.out.println("  (" + (bad - 10) + " more skipped)");
+        if (n == 0) {
+            System.out.println("Error: the file holds no valid places.");
+            return;
+        }
+        System.out.println("Map loaded. Places: " + n + ", pathways: " + paths
+                + (bad > 0 ? ", skipped lines: " + bad : "") + ".");
+    }
+
+
+
+
+        }
